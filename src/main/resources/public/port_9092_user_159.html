@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Demo Chat</title>
+
+    <link href="bootstrap.css" rel="stylesheet">
+
+    <style>
+        body {
+            padding: 20px;
+        }
+
+        .console {
+            height: 400px;
+            overflow: auto;
+        }
+
+        .username-msg {
+            color: orange;
+        }
+
+        .connect-msg {
+            color: green;
+        }
+
+        .disconnect-msg {
+            color: red;
+        }
+
+        .send-msg {
+            color: #888
+        }
+    </style>
+
+
+    <script src="js/socket.io/socket.io.js"></script>
+    <script src="js/moment.min.js"></script>
+    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+
+    <script>
+
+        //var userName1 = 'user1_' + Math.floor((Math.random() * 1000) + 1);
+
+        var userName1 = 'user_159';
+
+        const socket = io('http://localhost:9092/chat1' + '?user_id=' + userName1, {
+            transportOptions: {
+                polling: {
+                    extraHeaders: {
+                        my_api_token: "hello_my_api_token"
+                    }
+                }
+            }
+        });
+
+        var chat1Socket = socket.connect();
+
+        console.log(chat1Socket);
+
+
+        function connectHandler(parentId) {
+            return function () {
+                output('<span class="connect-msg">Client has connected to the server!</span>', parentId);
+            }
+        }
+
+        function messageHandler(parentId) {
+            return function (data) {
+                output('<span class="username-msg">' + data.userid_from + ':</span> ' + data.msg_content , parentId);
+            }
+        }
+
+        function disconnectHandler(parentId) {
+            return function () {
+                output('<span class="disconnect-msg">The client has disconnected!</span>', parentId);
+            }
+        }
+
+        function sendMessageHandler(parentId, userName, chatSocket) {
+            var message = $(parentId + ' .msg').val();
+            $(parentId + ' .msg').val('');
+
+            var jsonObject = {
+                '@class': 'com.slyang.im.socketio.message.SimpleMessage',
+                userid_from: userName,
+                userid_to: 'user_160',
+                msg_content: message
+            };
+            chatSocket.json.send(jsonObject);
+        }
+
+
+        chat1Socket.on('connect', connectHandler('#chat1'));
+
+        chat1Socket.on('message', messageHandler('#chat1'));
+
+        chat1Socket.on('disconnect', disconnectHandler('#chat1'));
+
+        function sendDisconnect1() {
+            chat1Socket.disconnect();
+        }
+
+        function sendMessage1() {
+            sendMessageHandler('#chat1', userName1, chat1Socket);
+        }
+
+
+
+        function output(message, parentId) {
+            var currentTime = "<span class='time'>" + moment().format('HH:mm:ss.SSS') + "</span>";
+            var element = $("<div>" + currentTime + " " + message + "</div>");
+            $(parentId + ' .console').prepend(element);
+        }
+
+        $(document).keydown(function (e) {
+            if (e.keyCode == 13) {
+                $('#send').click();
+            }
+        });
+    </script>
+</head>
+
+<body>
+
+<h1>Namespaces demo chat</h1>
+
+<br/>
+
+<div id="chat1" style="width: 49%; float: left;">
+    <h4>chat1</h4>
+    <div class="console well">
+    </div>
+
+    <form class="well form-inline" onsubmit="return false;">
+        <input class="msg input-xlarge" type="text" placeholder="Type something..."/>
+        <button type="button" onClick="sendMessage1()" class="btn" id="send">Send</button>
+        <button type="button" onClick="sendDisconnect1()" class="btn">Disconnect</button>
+    </form>
+</div>
+
+
+</body>
+
+</html>

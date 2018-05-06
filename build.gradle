@@ -1,0 +1,46 @@
+buildscript {
+	ext {
+		springBootVersion = '1.5.8.RELEASE'
+	}
+	repositories {
+		//mavenCentral()
+		//jcenter()
+		//google()
+		maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+		maven { url 'http://maven.aliyun.com/nexus/content/repositories/jcenter'}
+		maven { url 'http://maven.aliyun.com/nexus/content/repositories/google' }
+		maven { url 'https://plugins.gradle.org/m2/' }
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+group = 'com.slyang'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+
+repositories {
+	//mavenCentral()
+	//jcenter()
+	//google()
+	maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+	maven { url 'http://maven.aliyun.com/nexus/content/repositories/jcenter'}
+	maven { url 'http://maven.aliyun.com/nexus/content/repositories/google' }
+	maven { url 'https://plugins.gradle.org/m2/' }
+}
+
+
+dependencies {
+	compile('org.springframework.boot:spring-boot-starter')
+	compile('org.springframework.boot:spring-boot-starter-data-jpa')
+	compile group: 'mysql', name: 'mysql-connector-java', version: '5.1.46'
+	compile 'com.corundumstudio.socketio:netty-socketio:1.7.7'
+	compile 'org.redisson:redisson:2.2.11'
+	testCompile('org.springframework.boot:spring-boot-starter-test')
+}
