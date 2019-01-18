@@ -45,6 +45,8 @@ public class SocketIOStart implements CommandLineRunner {
 			return true;
 		});
 
+//		config.setOrigin("*");
+
 		config.getSocketConfig().setReuseAddress(true);
 		config.getSocketConfig().setSoLinger(0);
 		config.getSocketConfig().setTcpNoDelay(true);

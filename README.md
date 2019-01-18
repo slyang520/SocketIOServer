@@ -1,4 +1,4 @@
-SocketIO Server base [Netty-socketio](https://github.com/mrniko/netty-socketio-demo)
+SocketIO Server base [Netty-socketio](https://github.com/mrniko/netty-socketio)
 ===
 cluster base on redis
 
