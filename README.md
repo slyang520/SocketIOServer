@@ -1,5 +1,8 @@
+SocketIO Server base [Netty-socketio](https://github.com/mrniko/netty-socketio-demo)
+===
+cluster base on redis
 
-#SocketIO  Server
+```
+env jdk8, gradle4 
 
-###Support cluster deployment base on redis
-###Support single_chat, group_chat
+```

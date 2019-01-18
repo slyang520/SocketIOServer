@@ -7,7 +7,6 @@ import com.corundumstudio.socketio.SocketIOServer;
 import com.corundumstudio.socketio.annotation.SpringAnnotationScanner;
 import com.corundumstudio.socketio.listener.DefaultExceptionListener;
 import com.corundumstudio.socketio.store.RedissonStoreFactory;
-import com.corundumstudio.socketio.store.pubsub.PubSubMessage;
 import com.corundumstudio.socketio.store.pubsub.PubSubStore;
 import com.slyang.im.socketio.handler.ChatEventHandler;
 import org.slf4j.Logger;
@@ -18,8 +17,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PreDestroy;
-import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
 
 @Component
 public class SocketIOStart implements CommandLineRunner {
@@ -34,7 +31,7 @@ public class SocketIOStart implements CommandLineRunner {
 	RedissonStoreFactory redissonStoreFactory;
 
 	@Bean
-	public SocketIOServer socketIOServer() throws NoSuchAlgorithmException, IOException {
+	public SocketIOServer socketIOServer() {
 		Configuration config = new Configuration();
 		config.setPort(9092);
 		config.setStoreFactory(redissonStoreFactory);
@@ -42,7 +39,7 @@ public class SocketIOStart implements CommandLineRunner {
 
 		config.setAuthorizationListener(data -> {
 			//身份验证处理
-			String token = data.getSingleHeader("my_api_token");
+			String token =data.getHttpHeaders().get("my_api_token");
 			String user_id = data.getSingleUrlParam("user_id");
 			logger.debug("[Authorization  user_id= {}     token = {}]]", user_id, token);
 			return true;

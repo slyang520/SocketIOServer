@@ -10,9 +10,10 @@ import com.corundumstudio.socketio.store.pubsub.PubSubStore;
 import com.slyang.im.RedisClient;
 import com.slyang.im.socketio.message.MessageUuidMap;
 import com.slyang.im.socketio.message.SimpleMessage;
-import org.redisson.RedissonClient;
-import org.redisson.core.RBucket;
-import org.redisson.core.RTopic;
+import org.redisson.api.RBucket;
+import org.redisson.api.RTopic;
+import org.redisson.api.RedissonClient;
+import org.redisson.api.listener.MessageListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,17 +43,19 @@ public class ChatEventHandler {
 	@PostConstruct
 	public void init() {
 
-		RTopic<MessageUuidMap> topic = redissonClient.getTopic(TOPIC_SINGLE_CHAT);
-		topic.addListener((channel, message) -> {
+		RTopic topic = redissonClient.getTopic(TOPIC_SINGLE_CHAT);
 
-			SocketIOClient ioClient = chat1namespace.getClient(UUID.fromString(message.getSocketUuuid()));
-			if (ioClient != null) {
-				ioClient.sendEvent("message", message.getMessage());
-				logger.debug("[	    TOPIC_SINGLE_CHAT success]]");
-			}else{
-				logger.debug("[	    TOPIC_SINGLE_CHAT not find client]]");
+		topic.addListener(MessageUuidMap.class, new MessageListener<MessageUuidMap>() {
+			@Override
+			public void onMessage(CharSequence channel, MessageUuidMap msg) {
+				SocketIOClient ioClient = chat1namespace.getClient(UUID.fromString(msg.getSocketUuuid()));
+				if (ioClient != null) {
+					ioClient.sendEvent("message", msg.getMessage());
+					logger.debug("[	    TOPIC_SINGLE_CHAT success]]");
+				}else{
+					logger.debug("[	    TOPIC_SINGLE_CHAT not find client]]");
+				}
 			}
-
 		});
 
 	}
@@ -112,7 +115,7 @@ public class ChatEventHandler {
 				flag = true;
 			}
 			if(!flag){
-				RTopic<MessageUuidMap> topic = redissonClient.getTopic(TOPIC_SINGLE_CHAT);
+				RTopic topic = redissonClient.getTopic(TOPIC_SINGLE_CHAT);
 				topic.publish(new MessageUuidMap(other_uuid,data));
 			}
 		}

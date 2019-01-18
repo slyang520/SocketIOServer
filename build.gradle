@@ -38,9 +38,7 @@ repositories {
 
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter')
-	compile('org.springframework.boot:spring-boot-starter-data-jpa')
-	compile group: 'mysql', name: 'mysql-connector-java', version: '5.1.46'
-	compile 'com.corundumstudio.socketio:netty-socketio:1.7.7'
-	compile 'org.redisson:redisson:2.2.11'
+	compile 'com.corundumstudio.socketio:netty-socketio:1.7.17'
+	compile 'org.redisson:redisson:3.9.1'
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }
