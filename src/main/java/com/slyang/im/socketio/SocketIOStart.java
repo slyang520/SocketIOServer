@@ -37,11 +37,11 @@ public class SocketIOStart implements CommandLineRunner {
 		config.setStoreFactory(redissonStoreFactory);
 		config.setExceptionListener(new DefaultExceptionListener());
 
-		config.setAuthorizationListener(data -> {
+		config.setAuthorizationListener(handshakeData -> {
 			//身份验证处理
-			String token =data.getHttpHeaders().get("my_api_token");
-			String user_id = data.getSingleUrlParam("user_id");
-			logger.debug("[Authorization  user_id= {}     token = {}]]", user_id, token);
+			String user_id = handshakeData.getSingleUrlParam("user_id");
+            // todo
+			logger.debug("[Authorization  user_id= {}     token = {}]]", user_id);
 			return true;
 		});
 

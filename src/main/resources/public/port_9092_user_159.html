@@ -44,15 +44,7 @@
 
         var userName1 = 'user_159';
 
-        const socket = io('http://localhost:9092/chat1' + '?user_id=' + userName1, {
-            transportOptions: {
-                polling: {
-                    // extraHeaders: {
-                    //     my_api_token: "hello_my_api_token",
-                    // }
-                }
-            }
-        });
+        const socket = io('http://localhost:9092/chat1' + '?user_id=' + userName1);
 
         var chat1Socket = socket.connect();
 
