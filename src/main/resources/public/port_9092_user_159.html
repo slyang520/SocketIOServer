@@ -36,6 +36,7 @@
 
     <script src="js/socket.io/socket.io.js"></script>
     <script src="js/moment.min.js"></script>
+    <script src="js/bytebuffer.js"></script>
     <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
 
     <script>
@@ -59,7 +60,18 @@
 
         function messageHandler(parentId) {
             return function (data) {
-                output('<span class="username-msg">' + data.userid_from + ':</span> ' + data.msg_content , parentId);
+
+                //ArrayBuffer >> Int8Array
+                var source = new dcodeIO.ByteBuffer.wrap(new Int8Array(data).buffer);
+                console.log(source);
+                var head =source.readUint32();
+                var msg  =source.toUTF8();
+
+                console.log(head)
+                msg = JSON.parse(msg);
+                console.log(msg)
+
+                output('<span class="username-msg">' + msg.userid_from + ':</span> ' + msg.msg_content , parentId);
             }
         }
 
@@ -74,12 +86,18 @@
             $(parentId + ' .msg').val('');
 
             var jsonObject = {
-                '@class': 'com.slyang.im.socketio.message.SimpleMessage',
                 userid_from: userName,
                 userid_to: 'user_160',
                 msg_content: message
             };
-            chatSocket.json.send(jsonObject);
+
+
+            var source = new dcodeIO.ByteBuffer();
+            source.writeInt32(12);
+            source.writeUTF8String(JSON.stringify(jsonObject));
+            source.flip();
+
+            chatSocket.emit('message',source.buffer);
         }
 
 

@@ -1,14 +1,14 @@
-package com.slyang.im.socketio.message;
+package com.slyang.im.socketio.handler;
 
 public class MessageUuidMap {
 
 	private String socketUuuid;
-	private SimpleMessage message;
+	private byte[] message;
 
 	public MessageUuidMap() {
 	}
 
-	public MessageUuidMap(String socketUuuid, SimpleMessage message) {
+	public MessageUuidMap(String socketUuuid, byte[] message) {
 		this.socketUuuid = socketUuuid;
 		this.message = message;
 	}
@@ -21,14 +21,13 @@ public class MessageUuidMap {
 		this.socketUuuid = socketUuuid;
 	}
 
-	public SimpleMessage getMessage() {
+	public byte[] getMessage() {
 		return message;
 	}
 
-	public void setMessage(SimpleMessage message) {
+	public void setMessage(byte[] message) {
 		this.message = message;
 	}
-
 
 	@Override
 	public String toString() {

@@ -1,17 +1,22 @@
-package com.slyang.im.socketio.message;
+package com.slyang.im.socketio.message.msgcontent;
+
+import com.alibaba.fastjson.JSON;
+import com.slyang.im.socketio.message.constant.ChatType;
+import com.slyang.im.socketio.message.constant.MsgType;
 
 public class AbsMessage<T> {
 
 	private int chat_type = ChatType.CHAT_TYPE_SINGLE;
+	private int msg_type = MsgType.MSG_TYPE_TEXT;
+
+	private String msg_key;
 
 	private String userid_from;
 	private UserInfoFrom user_info_from;
 	private String userid_to;
 	private String roomid_to;
 
-	private String msg_key;
 	private String msg_content;
-	private int msg_type = MsgType.MSG_TYPE_TEXT;
 	private T msg_content_extra;
 
 	public String getUserid_from() {
@@ -89,18 +94,28 @@ public class AbsMessage<T> {
 
 	@Override
 	public String toString() {
-		return "AbsMessage{" +
-				this.getClass() + "	" +
-				"chat_type=" + chat_type +
-				", userid_from='" + userid_from + '\'' +
-				", user_info_from=" + user_info_from +
-				", userid_to='" + userid_to + '\'' +
-				", roomid_to='" + roomid_to + '\'' +
-				", msg_key='" + msg_key + '\'' +
-				", msg_content='" + msg_content + '\'' +
-				", msg_type=" + msg_type +
-				", msg_content_extra=" + msg_content_extra +
-				'}';
+		return JSON.toJSONString(this);
 	}
+
+	class UserInfoFrom{
+
+		private String img;
+
+		public String getImg() {
+			return img;
+		}
+
+		public void setImg(String img) {
+			this.img = img;
+		}
+
+		@Override
+		public String toString() {
+			return "UserInfoFrom{" +
+					"img='" + img + '\'' +
+					'}';
+		}
+	}
+
 
 }

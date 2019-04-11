@@ -1,4 +1,4 @@
-package com.slyang.im.socketio.message;
+package com.slyang.im.socketio.message.constant;
 
 public interface MsgType {
 
