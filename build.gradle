@@ -20,11 +20,15 @@ group = 'com.slyang'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 1.8
 
+wrapper {
+	gradleVersion = '5.3.1'
+	distributionType = Wrapper.DistributionType.ALL
+}
+
 repositories {
 	maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
 	maven { url 'http://maven.aliyun.com/nexus/content/repositories/jcenter'}
 	maven { url 'http://maven.aliyun.com/nexus/content/repositories/google' }
-	maven { url 'https://plugins.gradle.org/m2/' }
 }
 
 
