@@ -1,6 +1,6 @@
 buildscript {
 	ext {
-		springBootVersion = '1.5.8.RELEASE'
+		springBootVersion = '2.2.9.RELEASE'
 	}
 	repositories {
 		maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
@@ -21,8 +21,8 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 1.8
 
 wrapper {
-	gradleVersion = '5.3.1'
-	distributionType = Wrapper.DistributionType.ALL
+	gradleVersion = '6.3'
+	distributionType = Wrapper.DistributionType.BIN
 }
 
 repositories {
@@ -34,7 +34,7 @@ repositories {
 
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter')
-	compile 'com.corundumstudio.socketio:netty-socketio:1.7.17'
+	compile 'com.corundumstudio.socketio:netty-socketio:1.7.18'
 	compile 'org.redisson:redisson:3.9.1'
 	compile 'com.alibaba:fastjson:1.2.56'
 	testCompile('org.springframework.boot:spring-boot-starter-test')

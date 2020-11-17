@@ -12,6 +12,7 @@ import com.slyang.im.socketio.handler.ChatEventHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
@@ -30,10 +31,13 @@ public class SocketIOStart implements CommandLineRunner {
 	@Autowired
 	RedissonStoreFactory redissonStoreFactory;
 
+	@Value("${im.port}")
+	private int imPort;
+
 	@Bean
 	public SocketIOServer socketIOServer() {
 		Configuration config = new Configuration();
-		config.setPort(9092);
+		config.setPort(imPort);
 		config.setStoreFactory(redissonStoreFactory);
 		config.setExceptionListener(new DefaultExceptionListener());
 
