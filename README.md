@@ -4,7 +4,6 @@ cluster base on redis
 
 ```
 env jdk8, gradle6.x
-
 ```
 
 #  启动2个服务
@@ -25,7 +24,8 @@ link2: port_9093_user_160.html   连接上app2, 用户为160
 
 #  验证
 ```
-用2个不同的浏览器打开2个网页，让sid不同  ( 或。客户端连接的时候用用户id区分sid 标识不同的连接用户)
+用2个不同的浏览器打开2个网页，让sid不同  
+或者 同一浏览器打开配置 config.setRandomSession(true)   
 
 用户为159,160 链接在不同的服务
 2个用户相互发送消息，用户能正常接收。
